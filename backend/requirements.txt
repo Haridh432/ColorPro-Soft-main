@@ -1,0 +1,17 @@
+# Core
+Django==5.2.13
+djangorestframework==3.17.1
+django-cors-headers==4.9.0
+django-filter==25.2
+python-dotenv==1.2.2
+
+# Production server & static files
+gunicorn==23.0.0
+whitenoise==6.12.0
+
+# Data science / color comparison
+numpy==2.4.4
+scikit-learn==1.8.0
+
+# PDF reports
+xhtml2pdf==0.2.17

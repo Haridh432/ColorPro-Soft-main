@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ brand_name }} — Shade Comparison Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm 15mm 20mm 15mm;
+            @frame footer {
+                -pdf-frame-content: footerContent;
+                bottom: 0mm;
+                left: 15mm;
+                right: 15mm;
+                height: 10mm;
+            }
+        }
+
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 11px;
+            color: #1a1a2e;
+            line-height: 1.5;
+        }
+
+        .header-table {
+            width: 100%;
+            border-bottom: 2px solid #16213e;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .header-title {
+            font-size: 24px;
+            color: #16213e;
+            font-weight: bold;
+        }
+
+        .header-subtitle {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .header-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0f3460;
+            text-align: right;
+        }
+
+        .header-tagline {
+            font-size: 9px;
+            color: #888;
+            text-align: right;
+        }
+
+        .section-title {
+            font-size: 14px;
+            color: #0f3460;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .info-table {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .info-table td {
+            background-color: #f8f9fa;
+            padding: 8px;
+            border: 1px solid #fff; /* space simulation */
+            vertical-align: top;
+        }
+
+        .label {
+            font-size: 9px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .data-table th {
+            background-color: #16213e;
+            color: #ffffff;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 9px;
+            padding: 6px;
+            text-align: left;
+        }
+
+        .data-table td {
+            padding: 6px;
+            border: 1px solid #e0e0e0;
+            font-size: 10px;
+        }
+
+        .stats-table {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .stats-table td {
+            background-color: #f0f4ff;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #fff;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0f3460;
+        }
+
+        .color-swatch-cell {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #ccc;
+        }
+
+        .status-badge {
+            font-size: 9px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .signature-table {
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .signature-line {
+            border-top: 1px solid #333;
+            padding-top: 4px;
+            font-size: 10px;
+            color: #666;
+            margin-top: 30px;
+            width: 80%;
+        }
+
+        #footerContent {
+            font-size: 8px;
+            color: #888;
+            text-align: left;
+            border-top: 1px solid #ccc;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="footerContent">
+        <table style="width: 100%;">
+            <tr>
+                <td style="text-align: left; width: 50%;">{{ brand_name }} — Textile Shade Management System | Confidential</td>
+                <td style="text-align: right; width: 50%;">Page <pdf:pagenumber> of <pdf:pagecount></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Header block -->
+    <table class="header-table">
+        <tr>
+            <td style="width: 50%;">
+                <div class="header-title">Shade Comparison Report</div>
+                <div class="header-subtitle">Batch Quality Control Analysis</div>
+            </td>
+            <td style="width: 50%;">
+                <div class="header-brand">{{ brand_name }}</div>
+                <div class="header-tagline">Textile Shade Management System</div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="section-title">Batch Information</div>
+    <table class="info-table">
+        <tr>
+            <td style="width: 33%;">
+                <div class="label">Batch Name</div>
+                <div class="value">{{ batch.name }}</div>
+            </td>
+            <td style="width: 33%;">
+                <div class="label">Total Rolls</div>
+                <div class="value">{{ batch.roll_count }}</div>
+            </td>
+            <td style="width: 33%;">
+                <div class="label">Report Date</div>
+                <div class="value">{{ generated_at|date:"d M Y, H:i" }}</div>
+            </td>
+        </tr>
+    </table>
+    {% if batch.description %}
+    <p style="margin-bottom: 20px;"><strong>Description:</strong> {{ batch.description }}</p>
+    {% endif %}
+
+    {% if stats %}
+    <div class="section-title">Quality Summary</div>
+    <table class="stats-table">
+        <tr>
+            <td style="width: 25%;">
+                <div class="stat-value">{{ stats.pass_rate }}%</div>
+                <div class="label">Pass Rate</div>
+            </td>
+            <td style="width: 25%;">
+                <div class="stat-value">{{ stats.min_de }}</div>
+                <div class="label">Min ΔE</div>
+            </td>
+            <td style="width: 25%;">
+                <div class="stat-value">{{ stats.max_de }}</div>
+                <div class="label">Max ΔE</div>
+            </td>
+            <td style="width: 25%;">
+                <div class="stat-value">{{ stats.mean_de }}</div>
+                <div class="label">Mean ΔE</div>
+            </td>
+        </tr>
+    </table>
+    <p style="font-size: 9px; color: #888; margin-bottom: 20px;">
+        Thresholds — Accept: ΔE <= {{ warn_threshold }} | Warn: {{ warn_threshold }} &lt; ΔE <= {{ reject_threshold }} | Reject: ΔE &gt; {{ reject_threshold }}
+    </p>
+    {% endif %}
+
+    <div class="section-title">Roll Analysis</div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Roll #</th>
+                <th>Color</th>
+                <th>RGB</th>
+                <th>L*</th>
+                <th>a*</th>
+                <th>b*</th>
+                <th>ΔE (CIEDE)</th>
+                <th>Status</th>
+                <th>Group</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for roll in rolls %}
+            <tr>
+                <td><strong>{{ roll.roll_number }}</strong></td>
+                <td>
+                    {% with rgb=roll.avg_rgb %}
+                    {% if rgb %}
+                    <div style="width:16px;height:16px;background-color:rgb({{rgb.0}},{{rgb.1}},{{rgb.2}});border:1px solid #333"></div>
+                    {% else %}
+                    —
+                    {% endif %}
+                    {% endwith %}
+                </td>
+                <td>
+                    {% with rgb=roll.avg_rgb %}
+                    {% if rgb %}({{ rgb.0 }}, {{ rgb.1 }}, {{ rgb.2 }}){% else %}—{% endif %}
+                    {% endwith %}
+                </td>
+                <td>{% if roll.avg_l is not None %}{{ roll.avg_l|floatformat:2 }}{% else %}—{% endif %}</td>
+                <td>{% if roll.avg_a is not None %}{{ roll.avg_a|floatformat:2 }}{% else %}—{% endif %}</td>
+                <td>{% if roll.avg_b is not None %}{{ roll.avg_b|floatformat:2 }}{% else %}—{% endif %}</td>
+                <td>{% if roll.delta_e is not None %}{{ roll.delta_e|floatformat:4 }}{% else %}—{% endif %}</td>
+                <td>
+                    <span class="status-badge" style="color: {% if roll.status == 'accepted' %}green{% elif roll.status == 'warning' %}orange{% else %}red{% endif %};">
+                        {{ roll.get_status_display }}
+                    </span>
+                </td>
+                <td>{% if roll.shade_group %}Group {{ roll.shade_group }}{% else %}—{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if shade_groups %}
+    <div class="section-title">Shade Group Summary</div>
+    <div style="margin-bottom: 20px;">
+        {% for group_num, group_rolls in shade_groups.items %}
+        <p style="margin-bottom: 6px;">
+            <strong>Shade Group {{ group_num }}</strong> ({{ group_rolls|length }} rolls):
+            {% for roll in group_rolls %}
+                <span style="font-size: 10px;">{{ roll.roll_number }}, </span>
+            {% endfor %}
+        </p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <table class="signature-table">
+        <tr>
+            <td style="width: 50%;">
+                <div class="signature-line">QC Manager Signature</div>
+            </td>
+            <td style="width: 50%;">
+                <div class="signature-line">Date</div>
+            </td>
+        </tr>
+    </table>
+
+    {% if generated_by %}
+    <p style="font-size: 9px; color: #888; margin-top: 15px;">
+        Generated by: {{ generated_by.username }} | {{ generated_at|date:"d M Y, H:i:s" }}
+    </p>
+    {% endif %}
+
+</body>
+</html>

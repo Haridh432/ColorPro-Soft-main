@@ -1,0 +1,50 @@
+# ─── Python ───
+__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite3
+*.spec
+
+# ─── Environments ───
+.env
+.env.local
+venv/
+backend/venv/
+
+# ─── Node.js ───
+node_modules/
+frontend/node_modules/
+
+# ─── Next.js Build Artifacts ───
+.next/
+frontend/.next/
+frontend/out/
+out/
+
+# ─── Backend Build Artifacts ───
+backend/build/
+backend/dist/
+backend/frontend_build/
+backend/staticfiles/
+backend/media/
+build/
+dist/
+
+# ─── Test / Debug Artifacts ───
+*.pdf
+backend/scratch.py
+
+# ─── IDE & Editor ───
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ─── OS Files ───
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# ─── AI Agent Configs ───
+AGENTS.md
+CLAUDE.md

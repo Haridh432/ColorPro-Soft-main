@@ -1,0 +1,46 @@
+# ─── Python ───
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+backend/venv/
+venv/
+backend/dist/
+backend/build/
+*.spec
+
+# ─── Node.js ───
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# ─── IDE & OS ───
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+.DS_Store
+
+# ─── Git ───
+.git/
+.gitignore
+
+# ─── Secrets ───
+.env
+.env.local
+backend/.env
+
+# ─── Docker (prevent recursive copy) ───
+docker-compose.yml
+Dockerfile
+
+# ─── Not needed in Docker image ───
+esp32_sensor/
+Build_Windows_App.py
+deploy.ps1
+*.pdf
+*.md
+*.log
+AGENTS.md
+CLAUDE.md

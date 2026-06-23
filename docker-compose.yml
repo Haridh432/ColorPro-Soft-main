@@ -1,0 +1,25 @@
+services:
+  colorpro:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: colorpro
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persist database and media files across container restarts
+      - colorpro_data:/app/db_data
+      - colorpro_media:/app/media
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-change-me-in-production-use-a-long-random-string}
+      - DEBUG=False
+      - ALLOWED_HOSTS=*
+      - CORS_ALLOW_ALL_ORIGINS=True
+      - DELTA_E_WARN_THRESHOLD=0.6
+      - DELTA_E_REJECT_THRESHOLD=0.8
+      - SQLITE_DB_PATH=/app/db_data/db.sqlite3
+
+volumes:
+  colorpro_data:
+  colorpro_media:
