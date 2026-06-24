@@ -2,6 +2,7 @@ import os
 import secrets
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -59,13 +60,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'shade_project.wsgi.application'
 
-# Database — SQLite for development (swap to PostgreSQL later)
+# Database — SQLite for development, PostgreSQL for Production
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.getenv('SQLITE_DB_PATH', BASE_DIR / 'db.sqlite3'),
     }
 }
+
+# If Render provides a DATABASE_URL, use PostgreSQL instead!
+if os.getenv('DATABASE_URL'):
+    DATABASES['default'] = dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
