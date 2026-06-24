@@ -6,6 +6,9 @@ def create_default_superuser(sender, **kwargs):
     if not User.objects.filter(username='admin').exists():
         User.objects.create_superuser('admin', 'admin@example.com', 'admin123')
         print("Auto-created admin user.")
+    if not User.objects.filter(username='testuser').exists():
+        User.objects.create_user('testuser', 'test@example.com', 'testpass123')
+        print("Auto-created testuser.")
 
 class CoreConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
