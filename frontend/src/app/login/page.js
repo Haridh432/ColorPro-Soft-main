@@ -18,7 +18,8 @@ export default function LoginPage() {
       await api.login(username, password);
       router.push('/');
     } catch (err) {
-      setError('Invalid credentials. Please try again.');
+      console.error(err);
+      setError(err.message || 'Network Error: Failed to connect to server.');
     } finally {
       setLoading(false);
     }
