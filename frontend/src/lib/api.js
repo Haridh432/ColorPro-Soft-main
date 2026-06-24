@@ -56,6 +56,7 @@ class ApiClient {
 
   // Auth
   async login(username, password) {
+    this.clearToken();
     const data = await this.request('/token/', {
       method: 'POST',
       body: JSON.stringify({ username, password }),
