@@ -37,6 +37,10 @@ function BatchDetailContent() {
 
   useEffect(() => {
     loadBatchData();
+    const interval = setInterval(() => {
+      loadBatchData();
+    }, 3000);
+    return () => clearInterval(interval);
   }, [batchId]);
 
   async function loadBatchData() {
